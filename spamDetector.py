@@ -2,18 +2,13 @@ import streamlit as st
 import pickle
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
-from win32com.client import Dispatch
-import pythoncom
+# Removed win32com.client and pythoncom
 import threading
 
-# Non-blocking speech function
+# Optional: Use a fallback speak_async that does nothing (cross-platform safe)
 def speak_async(text):
-    def run():
-        pythoncom.CoInitialize()
-        speaker = Dispatch("SAPI.SpVoice")
-        speaker.Speak(text)
-        pythoncom.CoUninitialize()
-    threading.Thread(target=run).start()
+    # Stub function that does nothing on non-Windows systems
+    pass
 
 # Load model and vectorizer
 model = pickle.load(open('spam.pkl', 'rb'))
@@ -53,7 +48,7 @@ def main():
         This app uses a machine learning model to detect whether a message is spam or not.
         - Built with **Scikit-learn**
         - Vectorized using **CountVectorizer**
-        - Speech feedback via **SAPI (Windows)**
+        - Speech feedback via **SAPI (Windows only)** (disabled on this platform)
         """)
 
 if __name__ == '__main__':
